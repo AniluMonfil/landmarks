@@ -9,12 +9,18 @@ import Foundation
 import SwiftUI
 import CoreLocation
 
+/*
+ Because Landmark conforms to Codable, you can read the value associated with the key
+ by creating a new property with the same name as the key
+ */
+ 
 struct Landmark: Hashable, Codable, Identifiable {
     var id: Int
     var name: String
     var park: String
     var state: String
     var description: String
+    var isFavorite: Bool
     
     private var imageName: String
     var image: Image {

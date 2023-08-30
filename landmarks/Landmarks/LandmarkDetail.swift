@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct LandmarkDetail: View {
+    @EnvironmentObject var modelData: ModelData
     //like constructor
     var landmark: Landmark
+    
+    var landmarkIndex: Int{
+        //Compute the index of landmark.id in the landmarks array
+        modelData.landmarks.firstIndex(where: { $0.id == landmark.id})!
+       
+    }
     
     var body: some View {
         //Vstack initializer
@@ -19,7 +26,7 @@ struct LandmarkDetail: View {
                 .frame(height: 300)
             //Permitir que el contenido del mapa se extienda hasta el borde superior de la pantalla
                 .ignoresSafeArea(edges: .top)
-             
+            
             //IMAGEN
             CircleImage(image: landmark.image)
                 .offset(y: -130)
@@ -28,9 +35,12 @@ struct LandmarkDetail: View {
             //DATOS DEL LUGAR
             VStack(alignment: .leading) {
                 
-                Text(landmark.name)
-                    .font(.title)//Se llaman modifiers
-                    .foregroundColor(.black)
+                HStack {
+                    Text(landmark.name)
+                        .font(.title)
+                    FavoriteButton(isSet: $modelData.landmarks[landmarkIndex].isFavorite)
+                }
+                
                 
                 HStack {
                     Text(landmark.park)
@@ -59,8 +69,11 @@ struct LandmarkDetail: View {
 }
 
 struct LandmarkDetail_Previews: PreviewProvider {
+    static let modelData = ModelData()
+    
     static var previews: some View {
         //pass constructor
-        LandmarkDetail(landmark: landmarks[0])
+        LandmarkDetail(landmark: ModelData().landmarks[0])
+            .environmentObject(modelData)
     }
 }
